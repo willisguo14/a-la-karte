@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { View, Button, TextInput } from 'react-native'
+import { View, Button, TextInput, StyleSheet } from 'react-native'
 
 import firebase from 'firebase'
 
@@ -29,7 +29,7 @@ export default class Login extends Component {
 
     render() {
         return (
-            <View>
+            <View style={styles.container}>
                 <TextInput
                     placeholder="email"
                     onChangeText={(email) => this.setState({ email })}
@@ -47,3 +47,11 @@ export default class Login extends Component {
         )
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+  });
