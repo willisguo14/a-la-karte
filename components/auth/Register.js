@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 
-
-import { View, Button, TextInput } from 'react-native'
+import { View, Button, TextInput, Text } from 'react-native'
 
 import { Checkbox } from 'react-native-paper';
 
@@ -61,6 +60,7 @@ export default class Register extends Component {
                     secureTextEntry={true}
                     onChangeText={(password) => this.setState({ password })}
                 />
+                <Text>Click below if you are seller</Text>
                 <Checkbox
                     status={this.state.isSeller ? 'checked' : 'unchecked'}
                     onPress={() => this.setState({ isSeller: !this.state.isSeller })}
