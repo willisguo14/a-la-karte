@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { View, Button, TextInput, Text } from 'react-native'
+import { View, Button, TextInput, Text, StyleSheet } from 'react-native'
 
 import { Checkbox } from 'react-native-paper';
 
@@ -46,7 +46,7 @@ export default class Register extends Component {
 
     render() {
         return (
-            <View>
+            <View style={styles.container}>
                 <TextInput
                     placeholder="name"
                     onChangeText={(name) => this.setState({ name })}
@@ -73,3 +73,11 @@ export default class Register extends Component {
         )
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+  });
