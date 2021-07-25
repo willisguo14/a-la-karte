@@ -8,7 +8,7 @@ export default function ProfileFalse() {
     <View style={styles.container}>
       <Text>You're not a seller</Text>
       <TouchableOpacity onPress={() => firebase.auth().signOut()}>
-        <Text style={styles.signOut}>Sign out</Text>
+        <Text>Sign out</Text>
       </TouchableOpacity>
     </View>
   );
@@ -19,11 +19,7 @@ const styles = StyleSheet.create({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 40
   },
-  signOut: {
-    fontSize: 40,
-    marginTop: 20,
-    backgroundColor: "gray",
-    //width: "50%"
-  },
+  
 });
