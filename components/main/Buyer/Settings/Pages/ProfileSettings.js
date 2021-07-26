@@ -20,9 +20,15 @@ export class ProfileSettings extends Component {
       lastName: "",
     };
   }
-
   componentDidMount() {
     this.props.fetchUser();
+  }
+  componentWillReceiveProps() {
+    const { currentUser } = this.props;
+    this.setState({
+      firstName: currentUser.firstName,
+      lastName: currentUser.lastName,
+    });
   }
 
   render() {
@@ -50,6 +56,7 @@ export class ProfileSettings extends Component {
           placeholder="John"
           onChangeText={(firstName) => this.setState({ firstName })}
           style={styles.input}
+          //value={this.state.firstName}
         />
         <Text style={styles.titles}>Last Name</Text>
         <TextInput
@@ -57,6 +64,7 @@ export class ProfileSettings extends Component {
           placeholder="Smith"
           onChangeText={(lastName) => this.setState({ lastName })}
           style={styles.input}
+          //value={this.state.lastName}
         />
         <TouchableOpacity style={styles.save} onPress={saveProfile}>
           <Text>Save</Text>
