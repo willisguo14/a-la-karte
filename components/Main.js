@@ -8,7 +8,7 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { fetchUser } from "../redux/actions/index";
+import { fetchUser, fetchRestaurant } from "../redux/actions/index";
 
 import FeedScreen from "./main/Buyer/Feed";
 import FeedScreenSeller from "./main/Seller/SellerFeed";
@@ -24,10 +24,12 @@ const EmptyScreen = () => {
 export class Main extends Component {
   componentDidMount() {
     this.props.fetchUser();
+    this.props.fetchRestaurant();
   }
 
   render() {
     const { currentUser } = this.props;
+    //const { currentRestaurant } = this.props;
 
     if (currentUser === undefined) {
       return <View></View>;
@@ -64,8 +66,9 @@ export class Main extends Component {
 
 const mapStateToProps = (store) => ({
   currentUser: store.userState.currentUser,
+  currentRestaurant: store.restaurantState.currentRestaurant,
 });
 const mapDispatchProps = (dispatch) =>
-  bindActionCreators({ fetchUser }, dispatch);
+  bindActionCreators({ fetchUser, fetchRestaurant }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchProps)(Main);
