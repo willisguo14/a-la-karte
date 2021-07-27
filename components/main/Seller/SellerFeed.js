@@ -13,7 +13,7 @@ export class SellerFeed extends Component {
   render() {
     const { currentUser } = this.props;
 
-    if (currentUser === undefined ) {
+    if (currentUser === undefined) {
       return (
         <View>
           <Text style={{ marginTop: "20%" }}>Loading...</Text>
@@ -24,8 +24,14 @@ export class SellerFeed extends Component {
       <View style={styles.container}>
         <Text>Seller Feed</Text>
         <Text>Your Information</Text>
-        <Text>{currentUser.name}</Text>
+        <Text>{currentUser.firstName}</Text>
         <Text>{currentUser.address}</Text>
+        <TouchableOpacity
+          style={styles.setUp}
+          onPress={() => this.props.navigation.navigate("RestaurantSetup")}
+        >
+          <Text>Set up your restaurant</Text>
+        </TouchableOpacity>
       </View>
     );
   }
@@ -36,7 +42,14 @@ const styles = StyleSheet.create({
     marginTop: "20%",
   },
   setUp: {
-    backgroundColor: "gray",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: "3%",
+    width: "100%",
+    height: 40,
+    borderRadius: 13,
+    backgroundColor: "#3FD1D1",
   },
 });
 
