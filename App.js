@@ -23,11 +23,8 @@ if (firebase.apps.length === 0) {
 }
 
 import { Provider } from "react-redux";
-import { createStore, applyMiddleware } from "redux";
-import rootReducer from "./redux/reducers";
-import thunk from "redux-thunk";
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+//const store = createStore(rootReducer, applyMiddleware(thunk));
 
 import LandingScreen from "./components/auth/Landing";
 import RegisterScreen from "./components/auth/Register";
@@ -39,6 +36,7 @@ import SellerFeed from "./components/main/Seller/SellerFeed";
 import BuyerFeed from "./components/main/Buyer/Feed";
 import SettingsPage from "./components/main/Buyer/Settings/SettingsPage";
 import ProfileSettings from "./components/main/Buyer/Settings/Pages/ProfileSettings";
+import { reduxStore } from "./redux";
 
 const Stack = createStackNavigator();
 
@@ -96,7 +94,7 @@ export default class App extends Component {
     }
 
     return (
-      <Provider store={store}>
+      <Provider store={reduxStore}>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Main">
             <Stack.Screen

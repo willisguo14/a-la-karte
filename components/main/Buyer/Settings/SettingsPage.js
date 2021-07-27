@@ -1,49 +1,56 @@
-import React, { Component } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import React, { useEffect } from "react";
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import firebase from "firebase";
+import { fetchUser, getUser } from "../../../../redux/user";
+import { useDispatch, useSelector } from "react-redux";
 
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { fetchUser } from "../../../../redux/actions/index";
+export default function SettingsPage({ navigation }) {
+  const dispatch = useDispatch();
+  const user = useSelector(getUser);
 
-export class SettingsPage extends Component {
-  componentDidMount() {
-    this.props.fetchUser();
-  }
-  render() {
-    const { currentUser } = this.props;
-    return (
-      <View style={styles.container}>
-        <Text style={styles.name}>
-          {currentUser.firstName} {currentUser.lastName}
-        </Text>
-        <TouchableOpacity
-          style={styles.profile}
-          onPress={() => this.props.navigation.navigate("ProfileSettings")}
-        >
-          <Text style={styles.profileText}>Profile</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.profile}
-          // onPress={() => this.props.navigation.navigate("BuyerFeed")}
-        >
-          <Text style={styles.profileText}>Other</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.profile}
-          // onPress={() => this.props.navigation.navigate("BuyerFeed")}
-        >
-          <Text style={styles.profileText}>Stuff</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.signOut}
-          onPress={() => firebase.auth().signOut()}
-        >
-          <Text style={styles.profileText}>Sign Out</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
+  const handleFetchUser = async () => {
+    try {
+      await fetchUser(dispatch);
+    } catch (e) {
+      Alert.alert("Oops", e.message);
+    }
+  };
+
+  useEffect(() => {
+    handleFetchUser();
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.name}>
+        {user.firstName} {user.lastName}
+      </Text>
+      <TouchableOpacity
+        style={styles.profile}
+        onPress={() => navigation.navigate("ProfileSettings")}
+      >
+        <Text style={styles.profileText}>Profile</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.profile}
+        // onPress={() => this.props.navigation.navigate("BuyerFeed")}
+      >
+        <Text style={styles.profileText}>Other</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.profile}
+        // onPress={() => this.props.navigation.navigate("BuyerFeed")}
+      >
+        <Text style={styles.profileText}>Stuff</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.signOut}
+        onPress={() => firebase.auth().signOut()}
+      >
+        <Text style={styles.profileText}>Sign Out</Text>
+      </TouchableOpacity>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -82,11 +89,3 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF5454",
   },
 });
-
-const mapStateToProps = (store) => ({
-  currentUser: store.userState.currentUser,
-});
-const mapDispatchProps = (dispatch) =>
-  bindActionCreators({ fetchUser }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchProps)(SettingsPage);

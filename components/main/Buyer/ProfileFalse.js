@@ -1,29 +1,36 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { fetchUser } from "../../../redux/actions/index";
-
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import Settings from "./Settings/SettingsButton";
 
-export class ProfileFalse extends Component {
-  componentDidMount() {
-    this.props.fetchUser();
-  }
-  render() {
-    const { currentUser } = this.props;
-    
-    return (
-      <View style={styles.container}>
+import { useDispatch, useSelector } from "react-redux";
+import { getUser } from "../../../redux/user";
+
+export default function ProfileFalse() {
+  const dispatch = useDispatch();
+  const user = useSelector(getUser);
+
+  const handleFetchUser = async () => {
+    try {
+      await fetchUser(dispatch);
+    } catch (e) {
+      Alert.alert("Oops", e.message);
+    }
+  };
+
+  useEffect(() => {
+    handleFetchUser();
+  }, []);
+  
+  return (
+    <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.profile}>Your Profile</Text>
-          <Settings currentUser={currentUser}/>
+          <Settings currentUser={user}/>
         </View>
         <Text>You're not a seller</Text>
       </View>
-    );
-  }
+  )
 }
 
 const styles = StyleSheet.create({
@@ -59,11 +66,3 @@ const styles = StyleSheet.create({
     backgroundColor: "#3FD1D1",
   },
 });
-
-const mapStateToProps = (store) => ({
-  currentUser: store.userState.currentUser,
-});
-const mapDispatchProps = (dispatch) =>
-  bindActionCreators({ fetchUser }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchProps)(ProfileFalse);
