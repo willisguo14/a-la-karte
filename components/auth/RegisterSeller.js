@@ -39,7 +39,7 @@ export default class RegisterSeller extends Component {
             isSeller,
             address,
           });
-        console.log(result);
+        //console.log(result);
       })
       .catch((error) => {
         console.log(error);

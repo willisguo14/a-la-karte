@@ -4,12 +4,12 @@ import { View, Text, TouchableOpacity, StyleSheet, Alert } from "react-native";
 import Settings from "./Settings/SettingsButton";
 
 import { useDispatch, useSelector } from "react-redux";
-import { getUser } from "../../../redux/user";
+import { fetchUser, getUser } from "../../../redux/user";
 
 export default function ProfileFalse() {
   const dispatch = useDispatch();
   const user = useSelector(getUser);
-
+  
   const handleFetchUser = async () => {
     try {
       await fetchUser(dispatch);
@@ -21,6 +21,14 @@ export default function ProfileFalse() {
   useEffect(() => {
     handleFetchUser();
   }, []);
+
+  if (!user) {
+    return (
+      <View>
+        <Text style={{ marginTop: "20%" }}>Loading...</Text>
+      </View>
+    );
+  }
   
   return (
     <View style={styles.container}>

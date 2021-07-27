@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, { Component, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -12,9 +12,9 @@ import { bindActionCreators } from "redux";
 import firebase from "firebase";
 import { fetchUser, getUser } from "../../../../../redux/user";
 
-export default function ProfileSettings() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+export default function ProfileSettings({ navigation }) {
+  const [firstName, setFirstName] = useState(user?.firstName);
+  const [lastName, setLastName] = useState(user?.lastName);
   const dispatch = useDispatch();
   const user = useSelector(getUser);
 
@@ -31,7 +31,7 @@ export default function ProfileSettings() {
         console.error("Error updating document: ", error);
         //setErrorMessage("Error updating document: ", error);
       });
-    this.props.navigation.navigate("Settings");
+    navigation.navigate("Settings");
   };
 
   const handleFetchUser = async () => {

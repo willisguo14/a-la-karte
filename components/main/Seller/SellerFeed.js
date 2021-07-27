@@ -6,12 +6,12 @@ import { bindActionCreators } from "redux";
 import { fetchRestaurant, getRestaurant } from "../../../redux/restaurant";
 import { fetchUser, getUser } from "../../../redux/user";
 
-export default function SellerFeed() {
+export default function SellerFeed({ navigation }) {
   const dispatch = useDispatch();
   const user = useSelector(getUser);
   const restaurant = useSelector(getRestaurant);
 
-  const handleFetchUser = async ({ navigation }) => {
+  const handleFetchUser = async () => {
     try {
       await fetchUser(dispatch);
     } catch (e) {
@@ -38,12 +38,14 @@ export default function SellerFeed() {
       <Text>Your Information</Text>
       <Text>{user?.firstName}</Text>
       <Text>{user?.address}</Text>
-      <TouchableOpacity
-        style={styles.setUp}
-        onPress={() => navigation.navigate("RestaurantSetup")}
-      >
-        <Text>Set up your restaurant</Text>
-      </TouchableOpacity>
+      {restaurant ? null : (
+        <TouchableOpacity
+          style={styles.setUp}
+          onPress={() => navigation.navigate("RestaurantSetup")}
+        >
+          <Text>Set up your restaurant</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
