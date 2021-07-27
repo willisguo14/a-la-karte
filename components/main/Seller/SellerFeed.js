@@ -1,40 +1,53 @@
 import React, { useEffect, Component, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from "react-native";
 
-import { fetchUser } from "../../../redux/actions/index";
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
+import { fetchRestaurant, getRestaurant } from "../../../redux/restaurant";
+import { fetchUser, getUser } from "../../../redux/user";
 
-export class SellerFeed extends Component {
-  componentDidMount() {
-    this.props.fetchUser();
-  }
+export default function SellerFeed({ navigation }) {
+  const dispatch = useDispatch();
+  const user = useSelector(getUser);
+  const restaurant = useSelector(getRestaurant);
 
-  render() {
-    const { currentUser } = this.props;
-
-    if (currentUser === undefined) {
-      return (
-        <View>
-          <Text style={{ marginTop: "20%" }}>Loading...</Text>
-        </View>
-      );
+  const handleFetchUser = async () => {
+    try {
+      await fetchUser(dispatch);
+    } catch (e) {
+      Alert.alert("Oops", e.message);
     }
-    return (
-      <View style={styles.container}>
-        <Text>Seller Feed</Text>
-        <Text>Your Information</Text>
-        <Text>{currentUser.firstName}</Text>
-        <Text>{currentUser.address}</Text>
+  };
+
+  const handleFetchRestaurant = async () => {
+    try {
+      await fetchRestaurant(dispatch);
+    } catch (e) {
+      Alert.alert("Oops", e.message);
+    }
+  };
+
+  useEffect(() => {
+    handleFetchUser();
+    handleFetchRestaurant();
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      <Text>Seller Feed</Text>
+      <Text>Your Information</Text>
+      <Text>{user?.firstName}</Text>
+      <Text>{user?.address}</Text>
+      {restaurant ? null : (
         <TouchableOpacity
           style={styles.setUp}
-          onPress={() => this.props.navigation.navigate("RestaurantSetup")}
+          onPress={() => navigation.navigate("RestaurantSetup")}
         >
           <Text>Set up your restaurant</Text>
         </TouchableOpacity>
-      </View>
-    );
-  }
+      )}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -52,11 +65,3 @@ const styles = StyleSheet.create({
     backgroundColor: "#3FD1D1",
   },
 });
-
-const mapStateToProps = (store) => ({
-  currentUser: store.userState.currentUser,
-});
-const mapDispatchProps = (dispatch) =>
-  bindActionCreators({ fetchUser }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchProps)(SellerFeed);

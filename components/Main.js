@@ -1,14 +1,13 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 
-import { View, Text } from "react-native";
+import { View, Text, Alert } from "react-native";
 
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
-import { connect } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
-import { fetchUser } from "../redux/actions/index";
 
 import FeedScreen from "./main/Buyer/Feed";
 import FeedScreenSeller from "./main/Seller/SellerFeed";
@@ -17,55 +16,57 @@ import ProfileFalseScreen from "./main/Buyer/ProfileFalse";
 
 const Tab = createMaterialBottomTabNavigator();
 
-const EmptyScreen = () => {
-  return null;
-};
+import { fetchUser, getUser } from "../redux/user";
 
-export class Main extends Component {
-  componentDidMount() {
-    this.props.fetchUser();
-  }
-
-  render() {
-    const { currentUser } = this.props;
-
-    if (currentUser === undefined) {
-      return <View></View>;
+export default function Main() {
+  const dispatch = useDispatch();
+  const user = useSelector(getUser);
+  const handleFetchUser = async () => {
+    try {
+      await fetchUser(dispatch);
+    } catch (e) {
+      Alert.alert("Oops", e.message);
     }
+  };
 
+  useEffect(() => {
+    handleFetchUser();
+  }, []);
+
+  if (!user) {
     return (
-      <Tab.Navigator initialRouteName="Feed" labeled={false}>
-        <Tab.Screen
-          name="Feed"
-          component={currentUser.isSeller ? FeedScreenSeller : FeedScreen}
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="home" color={color} size={26} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Profile"
-          component={currentUser.isSeller ? ProfileScreen : ProfileFalseScreen}
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons
-                name="account-circle"
-                color={color}
-                size={26}
-              />
-            ),
-          }}
-        />
-      </Tab.Navigator>
+      <View>
+        <Text style={{ marginTop: "20%" }}>Loading...</Text>
+      </View>
     );
   }
+
+  return (
+    <Tab.Navigator initialRouteName="Feed" labeled={false}>
+      <Tab.Screen
+        name="Feed"
+        component={user?.isSeller ? FeedScreenSeller : FeedScreen}
+        //component={FeedScreenSeller}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" color={color} size={26} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={user?.isSeller ? ProfileScreen : ProfileFalseScreen}
+        //component={ProfileScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons
+              name="account-circle"
+              color={color}
+              size={26}
+            />
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  );
 }
-
-const mapStateToProps = (store) => ({
-  currentUser: store.userState.currentUser,
-});
-const mapDispatchProps = (dispatch) =>
-  bindActionCreators({ fetchUser }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchProps)(Main);

@@ -1,77 +1,72 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import {
   View,
   Text,
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  Alert,
 } from "react-native";
-import { connect } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { bindActionCreators } from "redux";
-import { fetchUser } from "../../../../../redux/actions/index";
 import firebase from "firebase";
+import { fetchUser, getUser } from "../../../../../redux/user";
 
-export class ProfileSettings extends Component {
-  constructor(props) {
-    super(props);
+export default function ProfileSettings({ navigation }) {
+  const [firstName, setFirstName] = useState(user?.firstName);
+  const [lastName, setLastName] = useState(user?.lastName);
+  const dispatch = useDispatch();
+  const user = useSelector(getUser);
 
-    this.state = {
-      firstName: "",
-      lastName: "",
-    };
-  }
-  componentDidMount() {
-    this.props.fetchUser();
-  }
-  componentWillReceiveProps() {
-    const { currentUser } = this.props;
-    this.setState({
-      firstName: currentUser.firstName,
-      lastName: currentUser.lastName,
-    });
-  }
+  const saveProfile = async () => {
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(firebase.auth().currentUser?.uid)
+      .update({
+        firstName: firstName,
+        lastName: lastName,
+      })
+      .catch((error) => {
+        console.error("Error updating document: ", error);
+        //setErrorMessage("Error updating document: ", error);
+      });
+    navigation.navigate("Settings");
+  };
 
-  render() {
-    const { currentUser } = this.props;
-    const saveProfile = async () => {
-      await firebase
-        .firestore()
-        .collection("users")
-        .doc(firebase.auth().currentUser?.uid)
-        .update({
-          firstName: this.state.firstName,
-          lastName: this.state.lastName,
-        })
-        .catch((error) => {
-          console.error("Error updating document: ", error);
-          //setErrorMessage("Error updating document: ", error);
-        });
-      this.props.navigation.navigate("Settings");
-    };
-    return (
-      <View style={styles.container}>
-        <Text style={styles.titles}>First Name</Text>
-        <TextInput
-          defaultValue={currentUser.firstName}
-          placeholder="John"
-          onChangeText={(firstName) => this.setState({ firstName })}
-          style={styles.input}
-          //value={this.state.firstName}
-        />
-        <Text style={styles.titles}>Last Name</Text>
-        <TextInput
-          defaultValue={currentUser.lastName}
-          placeholder="Smith"
-          onChangeText={(lastName) => this.setState({ lastName })}
-          style={styles.input}
-          //value={this.state.lastName}
-        />
-        <TouchableOpacity style={styles.save} onPress={saveProfile}>
-          <Text>Save</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
+  const handleFetchUser = async () => {
+    try {
+      await fetchUser(dispatch);
+    } catch (e) {
+      Alert.alert("Oops", e.message);
+    }
+  };
+
+  useEffect(() => {
+    handleFetchUser();
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.titles}>First Name</Text>
+      <TextInput
+        defaultValue={user.firstName}
+        placeholder="John"
+        onChangeText={(firstName) => setFirstName(firstName)}
+        style={styles.input}
+      />
+      <Text style={styles.titles}>Last Name</Text>
+      <TextInput
+        defaultValue={user.lastName}
+        placeholder="Smith"
+        onChangeText={(lastName) => setLastName(lastName)}
+        style={styles.input}
+      />
+      <TouchableOpacity style={styles.save} onPress={saveProfile}>
+        <Text>Save</Text>
+      </TouchableOpacity>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -108,11 +103,3 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
   },
 });
-
-const mapStateToProps = (store) => ({
-  currentUser: store.userState.currentUser,
-});
-const mapDispatchProps = (dispatch) =>
-  bindActionCreators({ fetchUser }, dispatch);
-
-export default connect(mapStateToProps, mapDispatchProps)(ProfileSettings);
