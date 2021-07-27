@@ -37,6 +37,7 @@ import BuyerFeed from "./components/main/Buyer/Feed";
 import SettingsPage from "./components/main/Buyer/Settings/SettingsPage";
 import ProfileSettings from "./components/main/Buyer/Settings/Pages/ProfileSettings";
 import { reduxStore } from "./redux";
+import SetUpRestaurant from "./components/main/Seller/SetUpRestaurant";
 
 const Stack = createStackNavigator();
 
@@ -106,6 +107,7 @@ export default class App extends Component {
             <Stack.Screen name="BuyerFeed" component={BuyerFeed} />
             <Stack.Screen name="Settings" component={SettingsPage} />
             <Stack.Screen name="ProfileSettings" component={ProfileSettings} />
+            <Stack.Screen name="RestaurantSetup" component={SetUpRestaurant} />
 
           </Stack.Navigator>
         </NavigationContainer>
