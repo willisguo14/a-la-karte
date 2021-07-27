@@ -4,7 +4,7 @@ import { View, Button, TextInput, Text, StyleSheet } from "react-native";
 
 import firebase from "firebase";
 
-export default class Register extends Component {
+export default class RegisterSeller extends Component {
   constructor(props) {
     super(props);
 
@@ -13,14 +13,16 @@ export default class Register extends Component {
       password: "",
       firstName: "",
       lastName: "",
-      isSeller: false,
+      isSeller: true,
+      address: "",
     };
 
     this.onSignUp = this.onSignUp.bind(this);
   }
 
   onSignUp() {
-    const { email, password, firstName, lastName, isSeller } = this.state;
+    const { email, password, firstName, lastName, isSeller, address } =
+      this.state;
 
     firebase
       .auth()
@@ -35,7 +37,9 @@ export default class Register extends Component {
             lastName,
             email,
             isSeller,
+            address,
           });
+        console.log(result);
       })
       .catch((error) => {
         console.log(error);
@@ -64,6 +68,10 @@ export default class Register extends Component {
           placeholder="Password"
           secureTextEntry={true}
           onChangeText={(password) => this.setState({ password })}
+        />
+        <TextInput
+          placeholder="Address"
+          onChangeText={(address) => this.setState({ address })}
         />
         <Button
           title="Sign Up"
