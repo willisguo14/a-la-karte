@@ -22,17 +22,16 @@ export default function Profile() {
     handleFetchRestaurant();
   }, []);
 
-  if (!restaurant) {
-    return (
-      <View>
-        <Text style={{ marginTop: "20%" }}>Loading...</Text>
-      </View>
-    );
-  }
+  // if (!restaurant) {
+  //   return (
+  //     <View>
+  //       <Text style={{ marginTop: "20%" }}>Loading...</Text>
+  //     </View>
+  //   );
+  // }
 
   return (
     <View style={styles.container}>
-      <Text>{restaurant?.phoneNumber}</Text>
       <Text>You're a seller</Text>
       <TouchableOpacity onPress={() => firebase.auth().signOut()}>
         <Text>Sign out</Text>

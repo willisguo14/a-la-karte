@@ -15,13 +15,14 @@ export default class RegisterSeller extends Component {
       lastName: "",
       isSeller: true,
       address: "",
+      hasRestaurant: false,
     };
 
     this.onSignUp = this.onSignUp.bind(this);
   }
 
   onSignUp() {
-    const { email, password, firstName, lastName, isSeller, address } =
+    const { email, password, firstName, lastName, isSeller, address, hasRestaurant } =
       this.state;
 
     firebase
@@ -38,6 +39,7 @@ export default class RegisterSeller extends Component {
             email,
             isSeller,
             address,
+            hasRestaurant,
           });
         //console.log(result);
       })
