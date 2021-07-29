@@ -5,7 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
-  FlatList,
+  TouchableHighlight,
 } from "react-native";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -52,6 +52,40 @@ export default function SellerFeed({ navigation }) {
       });
   }, []);
 
+  const handleDelete = (item) => {
+    Alert.alert(
+      "Warning",
+      `Are you sure you want to delete this menu item? This cannot be undone.`,
+      [
+        {
+          text: "Cancel",
+        },
+        {
+          text: "Delete",
+          onPress: async () => {
+            try {
+              await firebase
+                .firestore()
+                .collection("restaurant")
+                .doc(firebase.auth().currentUser?.uid)
+                .collection("menu")
+                .doc(item.id)
+                .delete()
+                .then(() => {
+                  console.log("Document successfully deleted!");
+                })
+                .catch((error) => {
+                  console.error("Error removing document: ", error);
+                });
+            } catch (e) {
+              Alert.alert("Oops", e.message);
+            }
+          },
+        },
+      ]
+    );
+  };
+
   if (!user) {
     return (
       <View>
@@ -60,8 +94,30 @@ export default function SellerFeed({ navigation }) {
     );
   }
 
+  const renderItem = ({ item, index }) => (
+    <TouchableHighlight
+      underlayColor="#A3A3A3"
+      onPress={() =>
+        navigation.navigate("EditMenuItem", {
+          item: item,
+        })
+      }
+    >
+      <View
+        style={{
+          ...styles.containerListRow,
+          ...(index !== 0 && styles.borderList),
+        }}
+      >
+        <Text>Name: {item.itemName}</Text>
+        <Text>Description: {item.description}</Text>
+        <Text>Price: {item.price}</Text>
+      </View>
+    </TouchableHighlight>
+  );
+
   const renderHiddenItem = (parentItem) => (
-    <TouchableOpacity style={styles.swipeContainer}>
+    <TouchableOpacity style={styles.swipeContainer} onPress={() => handleDelete(parentItem.item)}>
       <Text>Delete</Text>
     </TouchableOpacity>
   );
@@ -83,7 +139,7 @@ export default function SellerFeed({ navigation }) {
       {menuItems.length ? (
         <SwipeListView
           data={menuItems}
-          renderItem={MenuFeed}
+          renderItem={renderItem}
           keyExtractor={(item) => item.id}
           style={styles.containerList}
           renderHiddenItem={renderHiddenItem}
@@ -169,5 +225,13 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "center",
     backgroundColor: "#FF1717",
+  },
+  containerListRow: {
+    padding: 10,
+    backgroundColor: "#FFFFFF",
+  },
+  borderList: {
+    borderTopColor: "#DEDEDE",
+    borderTopWidth: 2,
   },
 });

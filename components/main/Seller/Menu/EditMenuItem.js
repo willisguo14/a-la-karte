@@ -9,10 +9,11 @@ import {
 } from "react-native";
 import firebase from "firebase";
 
-export default function EditMenuItem({ navigation }) {
-  const [itemName, setItemName] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState(0);
+export default function EditMenuItem({ route, navigation }) {
+  const { item } = route.params;
+  const [itemName, setItemName] = useState(item.itemName);
+  const [description, setDescription] = useState(item.description);
+  const [price, setPrice] = useState(item.price);
 
   const saveProfile = async () => {
     await firebase
@@ -20,7 +21,7 @@ export default function EditMenuItem({ navigation }) {
       .collection("restaurant")
       .doc(firebase.auth().currentUser?.uid)
       .collection("menu")
-      .doc(id)
+      .doc(item.id)
       .update({
         itemName: itemName,
         description: description,
@@ -36,14 +37,14 @@ export default function EditMenuItem({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.titles}>Item Name</Text>
       <TextInput
-        defaultValue={user.firstName}
+        defaultValue={item.itemName}
         placeholder="Name of the menu item"
         onChangeText={(itemName) => setItemName(itemName)}
         style={styles.input}
       />
       <Text style={styles.titles}>Description</Text>
       <TextInput
-        defaultValue={user.firstName}
+        defaultValue={item.description}
         multiline={true}
         placeholder="Description of item"
         onChangeText={(description) => setDescription(description)}
@@ -51,7 +52,7 @@ export default function EditMenuItem({ navigation }) {
       />
       <Text style={styles.titles}>Price</Text>
       <TextInput
-        defaultValue={user.firstName}
+        defaultValue={item.price}
         placeholder="Price of item"
         onChangeText={(price) => setPrice(price)}
         style={styles.input}

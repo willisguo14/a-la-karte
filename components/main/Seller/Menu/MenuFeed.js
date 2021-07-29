@@ -7,10 +7,14 @@ import {
   TouchableHighlight,
   Alert,
 } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 
 export default function MenuFeed({ item, index }) {
+  
   const handleEdit = () => {
-
+    navigation.navigate('EditMenuItem', {
+      id: item.id,
+    });
   };
 
   return (

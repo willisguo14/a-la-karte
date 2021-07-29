@@ -38,6 +38,7 @@ import ProfileSettings from "./components/main/Buyer/Settings/Pages/ProfileSetti
 import { reduxStore } from "./redux";
 import SetUpRestaurant from "./components/main/Seller/SetUpRestaurant";
 import AddMenuItem from "./components/main/Seller/Menu/AddMenuItem";
+import EditMenuItem from "./components/main/Seller/Menu/EditMenuItem";
 
 const Stack = createStackNavigator();
 
@@ -109,6 +110,7 @@ export default class App extends Component {
             <Stack.Screen name="ProfileSettings" component={ProfileSettings} />
             <Stack.Screen name="RestaurantSetup" component={SetUpRestaurant} />
             <Stack.Screen name="AddMenuItem" component={AddMenuItem} />
+            <Stack.Screen name="EditMenuItem" component={EditMenuItem} />
             
           </Stack.Navigator>
         </NavigationContainer>
