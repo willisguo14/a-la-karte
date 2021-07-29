@@ -6,8 +6,10 @@ import {
   Modal,
   StyleSheet,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import logo from "../../assets/logo.jpeg";
 
 export default function Landing({ navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -42,6 +44,10 @@ export default function Landing({ navigation }) {
             ></Button>
           </View>
         </Modal>
+        <View style={styles.logo}>
+          <Image style={styles.image} source={logo} />
+        </View>
+        <Text style={styles.name}>A la Carte</Text>
         <View style={styles.bottomContainer}>
           <TouchableOpacity
             style={styles.login}
@@ -103,12 +109,30 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: "85%",
+    marginTop: "50%",
     width: "100%",
     padding: "5%",
   },
   or: {
     color: "#FFFFFF",
     marginTop: "7%",
+  },
+  logo: {
+    shadowColor: "#6B6B6B",
+    shadowRadius: 14,
+    shadowOpacity: 1,
+    shadowOffset: { width: 0, height: 20 },
+    elevation: 1,
+  },
+  image: {
+    height: 150,
+    width: 150,
+    borderRadius: 55,
+  },
+  name: {
+    color: "#FFFFFF",
+    marginTop: "5%",
+    fontSize: 40,
+    letterSpacing: 2
   },
 });
