@@ -30,7 +30,6 @@ import LandingScreen from "./components/auth/Landing";
 import RegisterScreen from "./components/auth/Register";
 import LoginScreen from "./components/auth/Login";
 import MainScreen from "./components/Main";
-import AddScreen from "./components/main/Add";
 import RegisterSeller from "./components/auth/RegisterSeller";
 import SellerFeed from "./components/main/Seller/SellerFeed";
 import BuyerFeed from "./components/main/Buyer/Feed";
@@ -38,6 +37,8 @@ import SettingsPage from "./components/main/Buyer/Settings/SettingsPage";
 import ProfileSettings from "./components/main/Buyer/Settings/Pages/ProfileSettings";
 import { reduxStore } from "./redux";
 import SetUpRestaurant from "./components/main/Seller/SetUpRestaurant";
+import AddMenuItem from "./components/main/Seller/Menu/AddMenuItem";
+import EditMenuItem from "./components/main/Seller/Menu/EditMenuItem";
 
 const Stack = createStackNavigator();
 
@@ -108,7 +109,9 @@ export default class App extends Component {
             <Stack.Screen name="Settings" component={SettingsPage} />
             <Stack.Screen name="ProfileSettings" component={ProfileSettings} />
             <Stack.Screen name="RestaurantSetup" component={SetUpRestaurant} />
-
+            <Stack.Screen name="AddMenuItem" component={AddMenuItem} />
+            <Stack.Screen name="EditMenuItem" component={EditMenuItem} />
+            
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

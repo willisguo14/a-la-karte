@@ -7,19 +7,24 @@ import {
   TextInput,
 } from "react-native";
 import firebase from "firebase";
+import { useDispatch } from "react-redux";
+import { fetchRestaurant } from "../../../redux/restaurant";
+import { fetchUser } from "../../../redux/user";
 
 export default function SetUpRestaurant({ navigation }) {
   const [restaurantName, setRestaurantName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const dispatch = useDispatch();
 
-  const handleSave = () => {
-    firebase
+  const handleSave = async () => {
+    await firebase
       .firestore()
       .collection("restaurant")
       .doc(firebase.auth().currentUser.uid)
       .set({
         restaurantName: restaurantName,
         phoneNumber: phoneNumber,
+        menu: [],
       })
       .then(() => {
         console.log("Document successfully written!");
@@ -27,7 +32,20 @@ export default function SetUpRestaurant({ navigation }) {
       .catch((error) => {
         console.error("Error writing document: ", error);
       });
-    navigation.navigate("SellerFeed");
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(firebase.auth().currentUser?.uid)
+      .update({
+        hasRestaurant: true,
+      })
+      .catch((error) => {
+        console.error("Error updating document: ", error);
+        //setErrorMessage("Error updating document: ", error);
+      });
+    fetchUser(dispatch);
+    fetchRestaurant(dispatch);
+    navigation.goBack();
   };
   return (
     <View style={styles.container}>

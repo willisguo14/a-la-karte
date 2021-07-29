@@ -9,7 +9,7 @@ import { fetchUser, getUser } from "../../../redux/user";
 export default function ProfileFalse() {
   const dispatch = useDispatch();
   const user = useSelector(getUser);
-  
+
   const handleFetchUser = async () => {
     try {
       await fetchUser(dispatch);
@@ -29,16 +29,16 @@ export default function ProfileFalse() {
       </View>
     );
   }
-  
+
   return (
     <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.profile}>Your Profile</Text>
-          <Settings currentUser={user}/>
-        </View>
-        <Text>You're not a seller</Text>
+      <View style={styles.header}>
+        <Text style={styles.profile}>Your Profile</Text>
+        <Settings currentUser={user} />
       </View>
-  )
+      <Text>You're not a seller</Text>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

@@ -30,10 +30,28 @@ export const fetchRestaurant = async (dispatch) => {
         //dispatch({ type: USER_STATE_CHANGE, currentUser: snapshot.data() });
         dispatch(setRestaurant(snapshot.data()));
       } else {
+        
         console.log("does not exist");
       }
     });
 };
+
+// export const fetchMenuItem = async (dispatch) => {
+//   await firebase
+//     .firestore()
+//     .collection("restaurant")
+//     .doc(firebase.auth().currentUser.uid)
+//     .collection("menu")
+//     .doc(id)
+//     .get()
+//     .then((snapshot) => {
+//       if (snapshot.exists) {
+//         dispatch(setMenuItem(snapshot.data()));
+//       } else {
+//         console.log("does not exist");
+//       }
+//     });
+// };
 
 const restaurantSlice = createSlice({
   name: "restaurant",
