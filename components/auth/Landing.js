@@ -25,7 +25,7 @@ export default function Landing({ navigation }) {
   };
   return (
     <LinearGradient
-      colors={["#ef475b", "#f45164", "#d169cb", "9c84ec", "59a3ee"]}
+      colors={["#ef475b", "#d169cb", "59a3ee"]}
       style={styles.background}
       start={{ x: 1, y: 0 }}
       end={{ x: 0, y: 1 }}
