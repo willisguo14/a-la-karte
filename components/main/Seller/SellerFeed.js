@@ -117,7 +117,10 @@ export default function SellerFeed({ navigation }) {
   );
 
   const renderHiddenItem = (parentItem) => (
-    <TouchableOpacity style={styles.swipeContainer} onPress={() => handleDelete(parentItem.item)}>
+    <TouchableOpacity
+      style={styles.swipeContainer}
+      onPress={() => handleDelete(parentItem.item)}
+    >
       <Text>Delete</Text>
     </TouchableOpacity>
   );
@@ -129,7 +132,7 @@ export default function SellerFeed({ navigation }) {
         <View style={styles.subHeader}>
           <Text style={styles.menu}>Your Menu</Text>
           <TouchableOpacity
-            style={styles.setUp}
+            style={styles.setUp2}
             onPress={() => navigation.navigate("AddMenuItem")}
           >
             <Text>Add a Menu Item</Text>
@@ -154,7 +157,7 @@ export default function SellerFeed({ navigation }) {
   );
 
   const noRestaurant = (
-    <View>
+    <View style={styles.noRestaurant}>
       <TouchableOpacity
         style={styles.setUp}
         onPress={() => navigation.navigate("RestaurantSetup")}
@@ -187,10 +190,26 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: "3%",
+    width: "100%",
+    height: 40,
+    borderRadius: 13,
+    backgroundColor: "#3FD1D1",
+  },
+  setUp2: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: "3%",
     width: "45%",
     height: 40,
     borderRadius: 13,
     backgroundColor: "#3FD1D1",
+  },
+  noRestaurant: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: "10%",
   },
   header: {
     display: "flex",

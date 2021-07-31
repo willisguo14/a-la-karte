@@ -25,7 +25,7 @@ export default function Landing({ navigation }) {
   };
   return (
     <LinearGradient
-      colors={["#f64f59", "#c471ed", "#12c2e9"]}
+      colors={["#ef475b", "#f45164", "#d169cb", "9c84ec", "59a3ee"]}
       style={styles.background}
       start={{ x: 1, y: 0 }}
       end={{ x: 0, y: 1 }}
@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
   or: {
     color: "#FFFFFF",
     marginTop: "7%",
+    fontSize: 14
   },
   logo: {
     shadowColor: "#6B6B6B",
